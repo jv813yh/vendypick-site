@@ -170,31 +170,43 @@
     background-size: 34px 34px;
     mask-image: radial-gradient(circle at 50% 50%, #000 55%, transparent 80%);
   }
-  .ring { position: relative; width: 78%; height: 78%; }
-  .finger {
-    position: absolute; width: 64px; height: 64px; margin: -32px;
-    border-radius: 50%; display: grid; place-items: center;
-    font-weight: 800; font-size: 1.4rem; color: #150826;
-    background: radial-gradient(circle at 35% 30%, #fff7, transparent 55%), var(--c, var(--purple));
-    border: 2px solid rgba(255,255,255,0.5);
-    transition: transform .35s ease, box-shadow .35s ease, opacity .35s ease;
-    opacity: .62;
+  .stage-label {
+    position: absolute; top: 16px; left: 0; right: 0;
+    text-align: center; font-size: .74rem; font-weight: 800;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--ink-soft);
+    z-index: 3;
   }
-  .finger.picked {
-    opacity: 1; transform: scale(1.28);
-    box-shadow: 0 0 0 6px rgba(255,255,255,0.12), 0 0 34px 6px var(--c);
+  .spots { position: relative; width: 100%; height: 100%; }
+  .spot {
+    position: absolute; width: 39%; aspect-ratio: 1 / 1;
+    border-radius: 50%; display: grid; place-items: center; text-align: center;
+    padding: 6px; gap: 2px;
+    border: 2.5px solid var(--c);
+    background: radial-gradient(circle at 50% 45%, var(--fill), transparent 72%);
+    box-shadow: 0 0 22px -3px var(--c);
+    transition: transform .4s ease, box-shadow .4s ease, opacity .4s ease;
+    opacity: .82;
+  }
+  .spot .touch { font-size: 1.3rem; line-height: 1; }
+  .spot .who { font-weight: 800; font-size: .92rem; color: var(--ink); }
+  .spot .status { font-size: .56rem; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; color: var(--ink-faint); }
+  .spot .ping {
+    position: absolute; top: -5px; left: 50%; transform: translateX(-50%);
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--c); box-shadow: 0 0 12px var(--c);
+    opacity: 0;
+  }
+  .spot.live {
+    opacity: 1; transform: scale(1.08);
+    box-shadow: 0 0 30px 2px var(--c), inset 0 0 26px -8px var(--c);
     z-index: 2;
   }
-  .finger.f1 { --c: var(--pink);   top: 6%;  left: 50%; }
-  .finger.f2 { --c: var(--cyan);   top: 31%; left: 92%; }
-  .finger.f3 { --c: var(--yellow); top: 80%; left: 76%; }
-  .finger.f4 { --c: var(--purple); top: 80%; left: 24%; }
-  .finger.f5 { --c: var(--pink);   top: 31%; left: 8%;  }
-  .stage-hint {
-    position: absolute; bottom: 16px; left: 0; right: 0;
-    text-align: center; font-size: .8rem; font-weight: 700;
-    letter-spacing: .4px; color: var(--ink-faint); text-transform: uppercase;
-  }
+  .spot.live .ping { opacity: 1; animation: blink 1s ease-in-out infinite; }
+  .spot.live .status { color: var(--c); }
+
+  .spot.s1 { --c: var(--purple); --fill: rgba(155,109,255,0.22); top: 4%;  left: 30.5%; }
+  .spot.s2 { --c: var(--cyan);   --fill: rgba(56,232,255,0.18);  top: 56%; left: 4%;    }
+  .spot.s3 { --c: var(--pink);   --fill: rgba(255,79,163,0.18);  top: 56%; left: 57%;   }
 
   /* App icon placeholder */
   .app-icon {
@@ -415,16 +427,29 @@
         </div>
       </div>
 
-      <div class="picker-stage" role="img" aria-label="Illustration of five colored finger spots around a circle, with one being randomly highlighted as the chosen player.">
+      <div class="picker-stage" role="img" aria-label="A mock of the VendyPick verify-positions screen: three glowing player rings labelled Dell, Hp and MacBook, with one blinking as it waits for a finger.">
         <div class="app-icon" aria-hidden="true">VendyPick<br>App Icon</div>
-        <div class="ring" id="ring">
-          <div class="finger f1" data-i="1">1</div>
-          <div class="finger f2" data-i="2">2</div>
-          <div class="finger f3" data-i="3">3</div>
-          <div class="finger f4" data-i="4">4</div>
-          <div class="finger f5" data-i="5">5</div>
+        <div class="stage-label" aria-hidden="true">Verify positions</div>
+        <div class="spots" id="spots">
+          <div class="spot s1" data-i="1">
+            <span class="ping" aria-hidden="true"></span>
+            <span class="touch" aria-hidden="true">👆</span>
+            <span class="who">Dell</span>
+            <span class="status">Waiting</span>
+          </div>
+          <div class="spot s2" data-i="2">
+            <span class="ping" aria-hidden="true"></span>
+            <span class="touch" aria-hidden="true">👆</span>
+            <span class="who">Hp</span>
+            <span class="status">Waiting</span>
+          </div>
+          <div class="spot s3" data-i="3">
+            <span class="ping" aria-hidden="true"></span>
+            <span class="touch" aria-hidden="true">👆</span>
+            <span class="who">MacBook</span>
+            <span class="status">Waiting</span>
+          </div>
         </div>
-        <div class="stage-hint" aria-hidden="true">VendyPick chooses a player</div>
       </div>
     </div>
   </section>
@@ -536,7 +561,7 @@
         <div class="meta-row">
           <div class="meta-item"><b>Effective date</b><span>June 13, 2026</span></div>
           <div class="meta-item"><b>App name</b><span>VendyPick</span></div>
-          <div class="meta-item"><b>Developer / contact</b><span><a href="mailto:your-email@example.com">your-email@example.com</a></span></div>
+          <div class="meta-item"><b>Developer / contact</b><span><a href="mailto:vendeljozko@gmail.com">vendeljozko@gmail.com</a></span></div>
         </div>
 
         <p>This Privacy Policy explains how VendyPick (the "app") handles information. VendyPick is designed as a simple, offline party game, and it is built to respect your privacy by default.</p>
@@ -565,7 +590,7 @@
         <p>Since data stays on your device, you can remove any locally stored gameplay state or settings at any time by uninstalling the app or by clearing the app's storage in your Android settings.</p>
 
         <h3>Contact</h3>
-        <p>If you have any questions about this Privacy Policy or your privacy while using VendyPick, please contact us at <a href="mailto:your-email@example.com">your-email@example.com</a>.</p>
+        <p>If you have any questions about this Privacy Policy or your privacy while using VendyPick, please contact us at <a href="mailto:vendeljozko@gmail.com">vendeljozko@gmail.com</a>.</p>
       </div>
     </div>
   </section>
@@ -597,7 +622,7 @@
       <h2 id="support-title">We're here to help</h2>
       <div class="card">
         <p class="section-lede" style="margin:0;">For support or privacy questions, contact:</p>
-        <a class="mail" href="mailto:your-email@example.com" aria-label="Email VendyPick support">✉ your-email@example.com</a>
+        <a class="mail" href="mailto:vendeljozko@gmail.com" aria-label="Email VendyPick support">✉ vendeljozko@gmail.com</a>
       </div>
     </div>
   </section>
@@ -617,22 +642,25 @@
 </footer>
 
 <script>
-  // Ambient "picker" demo: highlight a random finger on a gentle loop.
+  // Ambient "verify positions" demo: highlight one waiting spot on a gentle loop.
   (function () {
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var fingers = Array.prototype.slice.call(document.querySelectorAll('.finger'));
-    if (!fingers.length) return;
+    var spots = Array.prototype.slice.call(document.querySelectorAll('.spot'));
+    if (!spots.length) return;
 
-    function pick() {
-      var i = Math.floor(Math.random() * fingers.length);
-      fingers.forEach(function (f, idx) {
-        f.classList.toggle('picked', idx === i);
+    function cycle() {
+      var i = Math.floor(Math.random() * spots.length);
+      spots.forEach(function (s, idx) {
+        var live = idx === i;
+        s.classList.toggle('live', live);
+        var status = s.querySelector('.status');
+        if (status) status.textContent = live ? 'Tap to verify' : 'Waiting';
       });
     }
 
-    pick();
+    cycle();
     if (!reduce) {
-      setInterval(pick, 2200);
+      setInterval(cycle, 2200);
     }
   })();
 </script>
