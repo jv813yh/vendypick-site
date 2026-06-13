@@ -178,7 +178,7 @@
   }
   .spots { position: relative; width: 100%; height: 100%; }
   .spot {
-    position: absolute; width: 39%; aspect-ratio: 1 / 1;
+    position: absolute; width: 37%; aspect-ratio: 1 / 1;
     border-radius: 50%; display: grid; place-items: center; text-align: center;
     padding: 6px; gap: 2px;
     border: 2.5px solid var(--c);
@@ -204,19 +204,9 @@
   .spot.live .ping { opacity: 1; animation: blink 1s ease-in-out infinite; }
   .spot.live .status { color: var(--c); }
 
-  .spot.s1 { --c: var(--purple); --fill: rgba(155,109,255,0.22); top: 4%;  left: 30.5%; }
-  .spot.s2 { --c: var(--cyan);   --fill: rgba(56,232,255,0.18);  top: 56%; left: 4%;    }
-  .spot.s3 { --c: var(--pink);   --fill: rgba(255,79,163,0.18);  top: 56%; left: 57%;   }
-
-  /* App icon placeholder */
-  .app-icon {
-    position: absolute; top: 14px; left: 14px;
-    width: 56px; height: 56px; border-radius: 16px;
-    display: grid; place-items: center; text-align: center;
-    font-size: .56rem; font-weight: 800; line-height: 1.15; color: var(--ink-soft);
-    background: linear-gradient(150deg, rgba(155,109,255,0.25), rgba(56,232,255,0.12));
-    border: 1px dashed var(--line);
-  }
+  .spot.s1 { --c: var(--purple); --fill: rgba(155,109,255,0.22); top: 17%; left: 31.5%; }
+  .spot.s2 { --c: var(--cyan);   --fill: rgba(56,232,255,0.18);  top: 58%; left: 6%;    }
+  .spot.s3 { --c: var(--pink);   --fill: rgba(255,79,163,0.18);  top: 58%; left: 57%;   }
 
   /* ---------- Sections ---------- */
   section { padding: clamp(48px, 8vw, 84px) 0; }
@@ -428,7 +418,6 @@
       </div>
 
       <div class="picker-stage" role="img" aria-label="A mock of the VendyPick verify-positions screen: three glowing player rings labelled Dell, Hp and MacBook, with one blinking as it waits for a finger.">
-        <div class="app-icon" aria-hidden="true">VendyPick<br>App Icon</div>
         <div class="stage-label" aria-hidden="true">Verify positions</div>
         <div class="spots" id="spots">
           <div class="spot s1" data-i="1">
