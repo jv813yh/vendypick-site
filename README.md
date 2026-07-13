@@ -1,5 +1,7 @@
 # VendyPick — Official Website & Privacy Policy
 
+![VendyPick — Tap. Pick. Dare.](feature-graphic.png)
+
 This repository hosts the official website and privacy policy for **VendyPick**, a family-safe local multiplayer *finger-picker* party game for Android. The page is a single, self-contained `index.html` served through **GitHub Pages** — no build step, no dependencies, and no third-party requests.
 
 **Tap. Pick. Dare.**
