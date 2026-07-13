@@ -1,50 +1,50 @@
 # VendyPick — Official Website & Privacy Policy
 
-This repository hosts the official website and Privacy Policy for **VendyPick**, a family-safe local multiplayer finger picker party game for Android. The page is a single, self-contained `index.html` served through **GitHub Pages**, and its public URL is used as the Privacy Policy link in the Google Play Console.
+This repository hosts the official website and privacy policy for **VendyPick**, a family-safe local multiplayer *finger-picker* party game for Android. The page is a single, self-contained `index.html` served through **GitHub Pages** — no build step, no dependencies, and no third-party requests.
 
 **Tap. Pick. Dare.**
 
 ## About VendyPick
 
-VendyPick turns any get-together into a game. Players place fingers on assigned spots, the app randomly picks one player, and the group gets a quick Truth or Dare style prompt.
+VendyPick turns any gathering into a game. Everyone puts a finger on the screen, the app randomly picks one player, and that player gets a quick Truth-or-Dare style prompt. One phone, passed around the group — that's the whole setup.
 
-- 2–10 players in one game
-- Configurable rounds (3, 5, 7 or 10) and lives (1–3)
-- Question categories: Party, Safe, Know, Action, Deep
-- Star scoring — 0 stars costs a life, 1–2 stars are added
-- Multiple languages (English, Slovak, and more)
-- Plays fully offline, on-device — no account, no ads, no tracking
+- **2–10 players** on a single device
+- **Configurable rounds** (3, 5, 7 or 10) and **lives** (1–3)
+- **Five worlds** of questions — Party, Safe, Know, Action, Deep — with dozens of categories you can switch on and off
+- **8 languages**, each with its own hand-localized question bank: English, Slovak, German, Spanish, Polish, Czech, French, Italian
+- **Star scoring** — a round is worth 0, 1 or 2 stars; 0 stars costs a life
+- **The Joker** — once per game from round 2, a player can spend a life to make sure they get picked
+- **Plays fully offline, on-device** — no account, no ads, no tracking
 
-## What's in this repo
+## Privacy
+
+VendyPick is built privacy-first. There is no account, no sign-up, and no personal data collection. Player names and gameplay never leave the device. The app contains no advertising or analytics SDKs, and it doesn't need an internet connection to play. This website itself loads no third-party resources.
+
+The full privacy policy is published on the site (`index.html`) and is intended to be used as the privacy-policy URL in the Google Play Console.
+
+## Repository Contents
 
 | File | Purpose |
 |------|---------|
-| `index.html` | The entire website and Privacy Policy in one self-contained file (HTML + CSS + a small vanilla JS animation). No frameworks, no external requests, no cookies, no analytics. |
-| `README.md` | This file. |
+| `index.html` | Complete website and privacy policy in a single file |
+| `feature-graphic.png` | Neon banner (1024×500) shown lower down as the closing visual |
+| `screenshots/dare.jpg` | Round result (Dare + scoring) used in "Every round, a new challenge" |
+| `screenshots/menu.jpg` | Setup screen used in "Set up in seconds" |
+| `screenshots/lang.jpg` | Language selection used in "Play in your language" |
+| `README.md` | This documentation |
 
-## Privacy summary
+The hero contains a small **interactive "pick a player" demo** (three glowing spots + a button that runs a random-pick roulette). It is plain inline JavaScript — no libraries, no build step, and it respects `prefers-reduced-motion`.
 
-VendyPick is built to respect privacy by default:
+**When the app goes live on Google Play:** in the `#download` section, replace the placeholder `<span class="gp-btn is-soon">…</span>` with `<a class="gp-btn" href="STORE_URL_HERE">…</a>` (keep the same inner markup) and change the "Coming soon to" line to "Get it on". An HTML comment in that section marks the exact spot.
 
-- No account registration required.
-- No personal information collected.
-- No advertising or analytics SDKs.
-- No user tracking, and no selling or sharing of data.
-- Gameplay and any player names stay on the device and are never sent to a server.
+> The page loads no third-party resources — every image is same-origin (`feature-graphic.png` and the three screenshots in `screenshots/`) and all CSS/JS is inline. Keep those files next to `index.html` when you deploy.
 
-The full policy is in the **Privacy Policy** section of the page.
+## Editing
 
-## Tech notes
-
-- Single file, no build step, no dependencies.
-- Responsive for mobile and desktop.
-- Accessible: semantic HTML, keyboard focus styles, and `prefers-reduced-motion` support.
-- Safe system fonts only — no external font or asset requests.
+`index.html` is plain HTML with inline CSS — open it in any editor and change the copy directly. There is nothing to build or install; commit the file and GitHub Pages serves it.
 
 ## Contact
 
-For support or privacy questions: **vendeljozko@gmail.com**
-
----
+vendeljozko@gmail.com
 
 © 2026 VendyPick. All rights reserved.

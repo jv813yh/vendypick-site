@@ -1,657 +1,582 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="description" content="VendyPick — a family-safe local multiplayer finger picker party game for Android. Place your fingers, let VendyPick choose a player, and play quick Truth or Dare style prompts. No account, no ads, no tracking." />
-<meta name="theme-color" content="#0e0a22" />
-<title>VendyPick — Family-safe finger picker party game</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VendyPick — Family-safe finger-picker party game</title>
+<meta name="description" content="VendyPick is a family-safe local multiplayer party game for Android. Everyone puts a finger on the screen, the app picks one player, and the group gets a quick Truth-or-Dare prompt. 2–10 players, 8 languages, fully offline — no account, no ads, no tracking.">
+<meta name="theme-color" content="#0C081A">
+<meta property="og:title" content="VendyPick — Tap. Pick. Dare.">
+<meta property="og:description" content="A family-safe finger-picker party game for Android. 2–10 players, 8 languages, fully offline. No account, no ads, no tracking.">
+<meta property="og:type" content="website">
 <style>
-  :root {
-    /* Palette */
-    --bg-deep:    #08060f;
-    --bg-navy:    #0e0a22;
-    --bg-card:    #160e30;
-    --bg-card-2:  #1b1340;
-    --ink:        #f3eeff;
-    --ink-soft:   #c4b9e6;
-    --ink-faint:  #8d80b8;
-    --pink:       #ff4fa3;
-    --purple:     #9b6dff;
-    --cyan:       #38e8ff;
-    --yellow:     #ffd84d;
-    --line:       rgba(155,109,255,0.22);
-
-    --shadow-glow: 0 0 0 1px rgba(155,109,255,0.18), 0 18px 50px -18px rgba(56,232,255,0.35);
-    --radius:      22px;
-    --radius-sm:   14px;
-
-    --font: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  :root{
+    --bg:#0C081A; --bg-soft:#140d29; --card:#171033; --card-2:#1d1440;
+    --line:rgba(255,255,255,.10); --line-2:rgba(255,255,255,.06);
+    --text:#F4F1FF; --muted:#B4A9D6; --muted-2:#8a7fb0;
+    --purple:#A855F7; --pink:#EC4899; --cyan:#06B6D4; --amber:#F59E0B;
   }
-
-  * { box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    margin: 0;
-    font-family: var(--font);
-    color: var(--ink);
-    background:
-      radial-gradient(900px 600px at 12% -8%, rgba(155,109,255,0.28), transparent 60%),
-      radial-gradient(800px 600px at 95% 4%, rgba(56,232,255,0.18), transparent 55%),
-      radial-gradient(700px 700px at 50% 120%, rgba(255,79,163,0.16), transparent 60%),
-      var(--bg-deep);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-  }
-
-  a { color: var(--cyan); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-
-  :focus-visible {
-    outline: 3px solid var(--cyan);
-    outline-offset: 3px;
-    border-radius: 6px;
-  }
-
-  .wrap { width: min(1080px, 92vw); margin-inline: auto; }
-
-  .skip-link {
-    position: absolute; left: 12px; top: -60px;
-    background: var(--pink); color: #1a0a18; font-weight: 700;
-    padding: 10px 16px; border-radius: 10px; z-index: 100;
-    transition: top .2s ease;
-  }
-  .skip-link:focus { top: 12px; text-decoration: none; }
-
-  /* ---------- Header / Nav ---------- */
-  header.site {
-    position: sticky; top: 0; z-index: 50;
-    backdrop-filter: blur(12px);
-    background: rgba(12,7,32,0.72);
-    border-bottom: 1px solid var(--line);
-  }
-  .nav {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 16px; padding: 14px 0;
-  }
-  .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: .3px; }
-  .brand .logo {
-    width: 38px; height: 38px; flex: none;
-    filter: drop-shadow(0 0 8px rgba(56,232,255,0.55)) drop-shadow(0 0 14px rgba(155,109,255,0.4));
-  }
-  .brand span { font-size: 1.15rem; }
-  .nav-links { display: flex; gap: 22px; }
-  .nav-links a { color: var(--ink-soft); font-weight: 600; font-size: .95rem; }
-  .nav-links a:hover { color: var(--ink); text-decoration: none; }
-
-  /* ---------- Hero ---------- */
-  .hero { padding: clamp(48px, 9vw, 96px) 0 clamp(40px, 7vw, 72px); }
-  .hero-grid {
-    display: grid; gap: clamp(32px, 6vw, 64px);
-    grid-template-columns: 1.05fr 0.95fr; align-items: center;
-  }
-  .badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-size: .82rem; font-weight: 700; letter-spacing: .2px;
-    color: var(--ink); padding: 8px 14px; border-radius: 999px;
-    background: rgba(155,109,255,0.14);
-    border: 1px solid var(--line);
-  }
-  .badge .pulse {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--cyan); box-shadow: 0 0 12px var(--cyan);
-    animation: blink 2.4s ease-in-out infinite;
-  }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
-
-  .hero h1 {
-    margin: 22px 0 8px;
-    font-size: clamp(3rem, 11vw, 5.4rem);
-    line-height: 0.95; letter-spacing: -1.5px; font-weight: 800;
-    background: linear-gradient(110deg, var(--pink) 0%, var(--purple) 38%, var(--cyan) 78%, var(--yellow) 120%);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-    text-shadow: 0 0 60px rgba(155,109,255,0.25);
-  }
-  .hero .motto {
-    margin: 0 0 14px; font-size: clamp(1.15rem, 3.5vw, 1.5rem);
-    font-weight: 800; letter-spacing: .5px;
-  }
-  .hero .motto .t { color: var(--cyan); }
-  .hero .motto .p { color: var(--pink); }
-  .hero .motto .d { color: var(--yellow); }
-  .hero .tagline {
-    font-size: clamp(1.15rem, 3vw, 1.45rem);
-    font-weight: 700; color: var(--ink); margin: 0 0 14px;
-  }
-  .hero p.lede { font-size: 1.06rem; color: var(--ink-soft); max-width: 46ch; margin: 0 0 28px; }
-
-  .cta-row { display: flex; flex-wrap: wrap; gap: 14px; }
-  .btn {
-    display: inline-flex; align-items: center; gap: 10px;
-    font-weight: 800; font-size: 1rem; cursor: pointer;
-    padding: 14px 24px; border-radius: 14px; border: 0;
-    font-family: inherit;
-  }
-  .btn-primary {
-    color: #1a0518;
-    background: linear-gradient(120deg, var(--pink), var(--yellow));
-    box-shadow: 0 12px 30px -10px rgba(255,79,163,0.7);
-    transition: transform .15s ease, box-shadow .15s ease;
-  }
-  .btn-primary:hover { transform: translateY(-2px); text-decoration: none; box-shadow: 0 16px 38px -10px rgba(255,79,163,0.85); }
-  .btn-ghost {
-    color: var(--ink); background: rgba(255,255,255,0.04);
-    border: 1px solid var(--line);
-    transition: background .15s ease;
-  }
-  .btn-ghost:hover { background: rgba(255,255,255,0.09); text-decoration: none; }
-
-  /* ---------- Hero signature: the finger picker ---------- */
-  .picker-stage {
-    position: relative; aspect-ratio: 1 / 1; width: 100%;
-    max-width: 420px; margin-inline: auto;
-    border-radius: 30px;
-    background:
-      radial-gradient(circle at 50% 45%, rgba(56,232,255,0.10), transparent 62%),
-      linear-gradient(160deg, var(--bg-card-2), var(--bg-card));
-    border: 1px solid var(--line);
-    box-shadow: var(--shadow-glow);
-    display: grid; place-items: center;
-    overflow: hidden;
-  }
-  .picker-stage::before {
-    content: ""; position: absolute; inset: 0;
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"Noto Sans",sans-serif;
+    line-height:1.6; -webkit-font-smoothing:antialiased;
     background-image:
-      linear-gradient(rgba(155,109,255,0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(155,109,255,0.06) 1px, transparent 1px);
-    background-size: 34px 34px;
-    mask-image: radial-gradient(circle at 50% 50%, #000 55%, transparent 80%);
+      radial-gradient(60rem 40rem at 15% -10%, rgba(168,85,247,.22), transparent 60%),
+      radial-gradient(50rem 35rem at 100% 0%, rgba(6,182,212,.16), transparent 55%),
+      radial-gradient(45rem 45rem at 50% 120%, rgba(236,72,153,.14), transparent 60%);
+    background-attachment:fixed;
   }
-  .stage-label {
-    position: absolute; top: 16px; left: 0; right: 0;
-    text-align: center; font-size: .74rem; font-weight: 800;
-    letter-spacing: 2px; text-transform: uppercase; color: var(--ink-soft);
-    z-index: 3;
-  }
-  .spots { position: relative; width: 100%; height: 100%; }
-  .spot {
-    position: absolute; width: 37%; aspect-ratio: 1 / 1;
-    border-radius: 50%; display: grid; place-items: center; text-align: center;
-    padding: 6px; gap: 2px;
-    border: 2.5px solid var(--c);
-    background: radial-gradient(circle at 50% 45%, var(--fill), transparent 72%);
-    box-shadow: 0 0 22px -3px var(--c);
-    transition: transform .4s ease, box-shadow .4s ease, opacity .4s ease;
-    opacity: .82;
-  }
-  .spot .touch { font-size: 1.3rem; line-height: 1; }
-  .spot .who { font-weight: 800; font-size: .92rem; color: var(--ink); }
-  .spot .status { font-size: .56rem; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; color: var(--ink-faint); }
-  .spot .ping {
-    position: absolute; top: -5px; left: 50%; transform: translateX(-50%);
-    width: 12px; height: 12px; border-radius: 50%;
-    background: var(--c); box-shadow: 0 0 12px var(--c);
-    opacity: 0;
-  }
-  .spot.live {
-    opacity: 1; transform: scale(1.08);
-    box-shadow: 0 0 30px 2px var(--c), inset 0 0 26px -8px var(--c);
-    z-index: 2;
-  }
-  .spot.live .ping { opacity: 1; animation: blink 1s ease-in-out infinite; }
-  .spot.live .status { color: var(--c); }
+  a{color:var(--cyan); text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:960px; margin:0 auto; padding:0 20px}
 
-  .spot.s1 { --c: var(--purple); --fill: rgba(155,109,255,0.22); top: 17%; left: 31.5%; }
-  .spot.s2 { --c: var(--cyan);   --fill: rgba(56,232,255,0.18);  top: 58%; left: 6%;    }
-  .spot.s3 { --c: var(--pink);   --fill: rgba(255,79,163,0.18);  top: 58%; left: 57%;   }
+  /* sticky top navigation */
+  .topnav{position:sticky; top:0; z-index:50; background:rgba(12,8,26,.72);
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border-bottom:1px solid var(--line-2)}
+  .nav-inner{max-width:960px; margin:0 auto; padding:11px 20px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
+  .nav-brand{display:flex; align-items:center; gap:10px; font-weight:800; font-size:1.12rem; color:var(--text); text-decoration:none}
+  .nav-brand:hover{text-decoration:none}
+  .nav-brand .np{color:#A855F7}
+  .nav-logo{width:30px; height:30px; flex:0 0 auto; filter:drop-shadow(0 0 8px rgba(168,85,247,.5))}
+  .nav-links{display:flex; flex-wrap:wrap; gap:4px; align-items:center}
+  .nav-links a{color:var(--muted); text-decoration:none; font-size:.92rem; font-weight:600;
+    padding:7px 12px; border-radius:10px; transition:color .15s ease, background .15s ease}
+  .nav-links a:hover{color:var(--text); background:rgba(255,255,255,.06); text-decoration:none}
+  @media(max-width:560px){
+    .nav-inner{justify-content:center}
+    .nav-links{justify-content:center}
+    .nav-links a{padding:6px 9px; font-size:.85rem}
+  }
+  /* keep anchored sections clear of the sticky bar */
+  section[id], header[id]{scroll-margin-top:78px}
+  .eyebrow{
+    display:inline-block; font-size:.74rem; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:.35rem .8rem;
+  }
+  h1,h2,h3{line-height:1.2; margin:0}
 
-  /* ---------- Sections ---------- */
-  section { padding: clamp(48px, 8vw, 84px) 0; }
-  .eyebrow {
-    display: inline-block; font-size: .8rem; font-weight: 800;
-    letter-spacing: 2px; text-transform: uppercase; color: var(--cyan);
-    margin-bottom: 12px;
+  /* Hero */
+  header.hero{padding:72px 0 60px; text-align:center}
+  .logo-wrap{display:flex; justify-content:center; margin-bottom:4px}
+  .logo{width:92px; height:92px; filter:drop-shadow(0 0 22px rgba(168,85,247,.55))}
+  .banner{margin:0 auto; border-radius:20px; overflow:hidden;
+    border:1px solid var(--line); box-shadow:0 24px 60px rgba(168,85,247,.22)}
+  .banner img{display:block; width:100%; height:auto; aspect-ratio:1024/500}
+  .hero-grid{display:grid; gap:40px; align-items:center; grid-template-columns:1fr}
+  .hero-copy{text-align:center}
+  .hero-art{display:flex; justify-content:center}
+  .shot{display:block; width:min(290px,74vw); height:auto; aspect-ratio:643/1280;
+    border-radius:30px; border:1px solid var(--line); background:#0a0718;
+    box-shadow:0 34px 66px rgba(168,85,247,.30)}
+  .hero-cap{margin:14px 0 0; color:var(--muted-2); font-size:.82rem; text-align:center}
+  /* interactive pick demo */
+  .demo{width:min(360px,86vw); margin:0 auto; background:linear-gradient(180deg,#160f31,#0c0820);
+    border:1px solid var(--line); border-radius:24px; padding:20px 18px;
+    box-shadow:0 34px 66px rgba(168,85,247,.28)}
+  .demo-head{text-align:center; letter-spacing:.22em; font-size:.72rem; color:var(--muted);
+    font-weight:800; text-transform:uppercase; margin-bottom:14px}
+  .ring-stage{position:relative; width:100%; max-width:300px; height:250px; margin:0 auto}
+  .pspot{position:absolute; width:96px; height:96px; border-radius:50%;
+    background:rgba(255,255,255,.03); border:3px solid var(--c); color:var(--text); font:inherit;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
+    box-shadow:0 0 16px -2px var(--c); transition:transform .16s ease, box-shadow .16s ease}
+  .pspot .nm{font-weight:800; font-size:.92rem}
+  .pspot .st{font-size:.56rem; letter-spacing:.1em; color:var(--muted); text-transform:uppercase}
+  .pspot[data-i="0"]{top:0; left:50%; margin-left:-48px}
+  .pspot[data-i="1"]{bottom:0; left:0}
+  .pspot[data-i="2"]{bottom:0; right:0}
+  .pspot.active{box-shadow:0 0 28px 2px var(--c); transform:scale(1.07)}
+  .pspot.chosen{box-shadow:0 0 42px 7px var(--c); transform:scale(1.12); background:rgba(255,255,255,.07); border-color:#fff}
+  .pick-btn{display:block; width:100%; margin-top:16px; padding:13px; border:0; border-radius:14px;
+    cursor:pointer; font-weight:800; font-size:1rem; color:#fff;
+    background:linear-gradient(90deg,var(--purple),var(--pink)); box-shadow:0 10px 26px rgba(236,72,153,.35)}
+  .pick-btn:active{transform:translateY(1px)}
+  .pick-btn[disabled]{opacity:.7; cursor:default}
+  .pick-result{min-height:22px; text-align:center; margin-top:12px; color:var(--text); font-size:.95rem}
+  .pick-result .mode{font-weight:800}
+  .pick-result .mode.d{color:#EC4899}
+  .pick-result .mode.t{color:#22D3EE}
+  .pick-result .mode.blink{animation:modeblink .5s ease-in-out 4}
+  @keyframes modeblink{0%,100%{opacity:1}50%{opacity:.2}}
+  .demo-hint{text-align:center; color:var(--muted-2); font-size:.78rem; margin-top:8px}
+  @media(min-width:820px){
+    .hero-grid{grid-template-columns:1.05fr .95fr; gap:24px}
+    .hero-copy{text-align:left}
+    .hero-copy .lede{margin:20px 0 0}
+    .hero-copy .badges{justify-content:flex-start}
+    .hero-copy .logo-wrap{justify-content:flex-start}
   }
-  h2 {
-    font-size: clamp(1.9rem, 5vw, 2.8rem); line-height: 1.08;
-    letter-spacing: -0.5px; margin: 0 0 18px; font-weight: 800;
+  /* image + copy band */
+  .split{display:grid; gap:34px; align-items:center; grid-template-columns:1fr}
+  .split .art{display:flex; justify-content:center}
+  .split .copy h2, .split .copy .sub{text-align:center; margin-left:auto; margin-right:auto}
+  .split .copy .langs{justify-content:center}
+  @media(min-width:820px){
+    .split{grid-template-columns:.92fr 1.08fr; gap:40px}
+    .split .copy h2, .split .copy .sub{text-align:left; margin-left:0}
+    .split .copy .langs{justify-content:flex-start}
   }
-  .section-lede { color: var(--ink-soft); font-size: 1.08rem; max-width: 60ch; margin: 0 0 12px; }
+  .checklist{list-style:none; padding:0; margin:22px 0 0; display:grid; gap:12px}
+  .checklist li{display:flex; gap:12px; align-items:flex-start; color:var(--muted)}
+  .checklist b{color:var(--text)}
+  .tick{color:var(--amber); font-weight:800; flex:0 0 auto}
+  .wordmark{font-size:clamp(3rem,11vw,5.5rem); font-weight:800; letter-spacing:-.02em; margin:22px 0 6px}
+  .wordmark .v{color:#fff}
+  .wordmark .p{color:#A855F7; text-shadow:0 0 26px rgba(168,85,247,.55), 0 0 46px rgba(168,85,247,.30)}
+  .tagline{font-size:clamp(1.05rem,3.2vw,1.5rem); font-weight:800; letter-spacing:.03em}
+  /* per-word tagline colors, matching the app */
+  .c1{color:#22D3EE}   /* Tap  — cyan   */
+  .c2{color:#A855F7}   /* Pick — purple */
+  .c3{color:#F59E0B}   /* Dare — amber  */
+  .lede{max-width:640px; margin:20px auto 0; color:var(--muted); font-size:1.08rem}
+  .badges{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:28px 0 0}
+  .badge{font-size:.86rem; color:var(--text); background:rgba(255,255,255,.04);
+    border:1px solid var(--line); border-radius:999px; padding:.42rem .9rem}
+  .badge b{color:var(--amber); font-weight:700}
 
-  .card {
-    background: linear-gradient(160deg, var(--bg-card), var(--bg-card-2));
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 26px;
-  }
+  section{padding:52px 0; border-top:1px solid var(--line-2)}
+  section h2{font-size:clamp(1.5rem,4.5vw,2.1rem); font-weight:800; text-align:center}
+  section .sub{text-align:center; color:var(--muted); max-width:620px; margin:12px auto 0}
 
-  /* About */
-  .about-grid { display: grid; gap: 20px; grid-template-columns: 1.2fr 0.8fr; align-items: start; }
-  .stat-list { display: grid; gap: 14px; }
-  .stat {
-    display: flex; align-items: center; gap: 14px;
-    padding: 16px 18px; border-radius: var(--radius-sm);
-    background: rgba(255,255,255,0.03); border: 1px solid var(--line);
+  /* Steps */
+  .steps{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:16px; margin:36px 0 0; counter-reset:step}
+  .step{position:relative; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px;
+    transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease}
+  .step:hover{transform:translateY(-7px) scale(1.03); border-color:var(--acc,var(--purple)); background:var(--card-2);
+    box-shadow:0 22px 46px -12px var(--acc,rgba(168,85,247,.45))}
+  .step:hover h3{color:var(--acc,#fff)}
+  .step::before{counter-increment:step; content:counter(step);
+    display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; margin-bottom:12px;
+    font-weight:800; color:#0b0718; border-radius:10px; background:var(--acc,var(--purple));
+    transition:transform .2s ease;
+    animation:stepwave 3s ease-in-out infinite; animation-delay:var(--d,0s)}
+  .step:hover::before{transform:scale(1.2) rotate(-6deg)}
+  .step h3{font-size:1rem; margin-bottom:6px; transition:color .2s ease}
+  .step p{margin:0; color:var(--muted); font-size:.92rem}
+  @keyframes stepwave{
+    0%,100%{box-shadow:0 0 0 0 transparent}
+    50%{box-shadow:0 0 18px 2px var(--acc,var(--purple))}
   }
-  .stat .n {
-    font-size: 1.5rem; font-weight: 800; flex: none; min-width: 58px; text-align: center;
-    background: linear-gradient(120deg, var(--pink), var(--cyan));
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
-  .stat .t { color: var(--ink-soft); font-weight: 600; font-size: .98rem; }
+  @media(prefers-reduced-motion:reduce){ .step::before{animation:none} }
 
-  /* Features */
-  .feature-grid {
-    display: grid; gap: 18px;
-    grid-template-columns: repeat(4, 1fr);
+  /* Feature cards */
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; margin:36px 0 0}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:22px;
+    transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease}
+  .card:hover{transform:translateY(-6px); border-color:var(--acc,var(--purple)); background:var(--card-2);
+    box-shadow:0 20px 44px -14px var(--acc,rgba(168,85,247,.45))}
+  .card:hover h3{color:var(--acc,#fff)}
+  .card:hover .ic{transform:scale(1.22) rotate(-6deg)}
+  .card .ic{font-size:1.6rem; line-height:1; display:inline-block; transition:transform .2s ease;
+    animation:iconglow 3.4s ease-in-out infinite; animation-delay:var(--d,0s)}
+  .card h3{font-size:1.06rem; margin:12px 0 6px; transition:color .2s ease}
+  .card p{margin:0; color:var(--muted); font-size:.94rem}
+  @keyframes iconglow{
+    0%,100%{filter:drop-shadow(0 0 0 transparent)}
+    50%{filter:drop-shadow(0 0 7px var(--acc,var(--purple)))}
   }
-  .feature {
-    background: linear-gradient(160deg, var(--bg-card), var(--bg-card-2));
-    border: 1px solid var(--line); border-radius: var(--radius);
-    padding: 22px; transition: transform .18s ease, border-color .18s ease;
-  }
-  .feature:hover { transform: translateY(-4px); border-color: rgba(56,232,255,0.5); }
-  .feature .ic {
-    width: 46px; height: 46px; border-radius: 13px; margin-bottom: 14px;
-    display: grid; place-items: center; font-size: 1.4rem;
-    background: rgba(155,109,255,0.16); border: 1px solid var(--line);
-  }
-  .feature h3 { margin: 0 0 6px; font-size: 1.05rem; font-weight: 800; }
-  .feature p { margin: 0; color: var(--ink-soft); font-size: .92rem; }
+  @media(prefers-reduced-motion:reduce){ .card .ic{animation:none} }
 
-  /* How to play */
-  .steps { display: grid; gap: 18px; grid-template-columns: repeat(3, 1fr); counter-reset: step; }
-  .step-card {
-    position: relative; counter-increment: step;
-    background: linear-gradient(160deg, var(--bg-card), var(--bg-card-2));
-    border: 1px solid var(--line); border-radius: var(--radius);
-    padding: 26px 24px;
-  }
-  .step-card .num {
-    width: 42px; height: 42px; border-radius: 12px; margin-bottom: 14px;
-    display: grid; place-items: center; font-weight: 800; font-size: 1.1rem; color: #150826;
-    background: linear-gradient(120deg, var(--pink), var(--purple));
-    box-shadow: 0 8px 20px -8px rgba(255,79,163,0.7);
-  }
-  .step-card .num::before { content: counter(step); }
-  .step-card h3 { margin: 0 0 6px; font-size: 1.1rem; font-weight: 800; }
-  .step-card p { margin: 0; color: var(--ink-soft); font-size: .95rem; }
-  .cat-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-  .cat-chips span {
-    font-size: .78rem; font-weight: 700; color: var(--ink-soft);
-    padding: 5px 12px; border-radius: 999px;
-    background: rgba(155,109,255,0.14); border: 1px solid var(--line);
-  }
+  /* Worlds */
+  .worlds{display:flex; flex-wrap:wrap; gap:14px; justify-content:center; margin:34px 0 0}
+  .world{position:relative; isolation:isolate; border:1px solid var(--line); border-top:3px solid var(--acc,var(--purple));
+    border-radius:14px; padding:18px 22px; min-width:170px; text-align:center; background:var(--card-2);
+    box-shadow:0 12px 30px rgba(0,0,0,.28); transition:transform .18s ease, box-shadow .18s ease}
+  .world:hover{transform:translateY(-4px); box-shadow:0 18px 40px rgba(0,0,0,.4)}
+  /* rotating accent glow (propeller-style) on hover */
+  .world::before, .dl-card::before{content:""; position:absolute; inset:-3px; border-radius:16px; z-index:-1;
+    background:conic-gradient(from 0deg, transparent 0 55%, var(--acc,var(--purple)) 82%, transparent 100%);
+    filter:blur(8px); opacity:0; transition:opacity .25s ease; animation:spin 2.6s linear infinite}
+  .world:hover::before, .dl-card:hover::before{opacity:.9}
+  @keyframes spin{to{transform:rotate(1turn)}}
+  @media(prefers-reduced-motion:reduce){ .world::before, .dl-card::before{animation:none} }
+  .world .name{font-weight:800; letter-spacing:.06em; text-transform:uppercase; font-size:1.02rem; color:var(--acc,#fff)}
+  .world .desc{color:var(--muted); font-size:.86rem; margin-top:6px}
+
+  /* Languages */
+  .langs{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:28px 0 0}
+  .lang{border:1px solid var(--line); border-radius:999px; padding:.5rem 1rem; background:rgba(255,255,255,.03); font-size:.95rem}
+
+  /* download */
+  .dl-card{position:relative; isolation:isolate; max-width:520px; margin:28px auto 0;
+    background:var(--card-2); border:1px solid var(--line); border-top:3px solid var(--acc,var(--purple));
+    border-radius:18px; padding:28px 24px; text-align:center; box-shadow:0 16px 40px rgba(0,0,0,.3);
+    transition:transform .18s ease, box-shadow .18s ease}
+  .dl-card:hover{transform:translateY(-4px); box-shadow:0 22px 48px rgba(0,0,0,.42)}
+  .get{display:flex; justify-content:center; gap:14px; flex-wrap:wrap; margin-top:22px}
+  .gp-btn{display:inline-flex; align-items:center; gap:12px; padding:12px 22px; border-radius:14px;
+    background:#0e0a20; border:1px solid var(--line); color:var(--text); text-decoration:none;
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease}
+  .gp-btn:hover{transform:translateY(-3px); border-color:var(--purple);
+    box-shadow:0 16px 34px -12px rgba(168,85,247,.5); text-decoration:none}
+  .gp-ic{display:inline-flex; flex:0 0 auto}
+  .gp-tx{display:flex; flex-direction:column; line-height:1.15; text-align:left}
+  .gp-tx small{font-size:.68rem; color:var(--muted); letter-spacing:.04em}
+  .gp-tx b{font-size:1.15rem; font-weight:800}
+  .gp-btn.is-soon{opacity:.9; cursor:default}
+  .gp-btn.is-soon:hover{transform:none; box-shadow:none; border-color:var(--line)}
+  .get-note{text-align:center; color:var(--muted); margin:22px 0 0}
+  .get-note b{color:var(--text)}
 
   /* Privacy */
-  .privacy-card { padding: clamp(26px, 4vw, 44px); }
-  .meta-row {
-    display: flex; flex-wrap: wrap; gap: 10px 22px;
-    padding-bottom: 22px; margin-bottom: 24px;
-    border-bottom: 1px solid var(--line);
-  }
-  .meta-item { font-size: .92rem; }
-  .meta-item b { display: block; color: var(--ink-faint); font-size: .72rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; margin-bottom: 3px; }
-  .meta-item span { color: var(--ink); font-weight: 700; }
+  .policy{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:26px; margin:32px 0 0}
+  .policy h3{font-size:1.06rem; margin:22px 0 6px}
+  .policy h3:first-child{margin-top:0}
+  .policy p{margin:0 0 6px; color:var(--muted)}
+  .policy ul{margin:6px 0 0; padding-left:1.2rem; color:var(--muted)}
+  .policy li{margin:4px 0}
+  .meta{color:var(--muted-2); font-size:.86rem; text-align:center; margin:0 0 4px}
 
-  .privacy-card h3 {
-    font-size: 1.2rem; margin: 28px 0 10px; font-weight: 800;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .privacy-card h3:first-of-type { margin-top: 0; }
-  .privacy-card h3::before {
-    content: ""; width: 10px; height: 10px; border-radius: 3px;
-    background: linear-gradient(120deg, var(--pink), var(--cyan)); flex: none;
-  }
-  .privacy-card p { color: var(--ink-soft); margin: 0 0 14px; }
-  .priv-list { list-style: none; margin: 0 0 8px; padding: 0; display: grid; gap: 10px; }
-  .priv-list li {
-    position: relative; padding-left: 30px; color: var(--ink-soft);
-  }
-  .priv-list li::before {
-    content: "✓"; position: absolute; left: 0; top: 0;
-    color: var(--cyan); font-weight: 900;
-  }
-  .priv-list.no li::before { content: "✕"; color: var(--pink); }
-
-  /* Family / Support callouts */
-  .callout {
-    display: grid; gap: 18px; grid-template-columns: 1fr 1fr;
-  }
-  .callout .card { display: flex; flex-direction: column; gap: 8px; }
-  .callout .tag {
-    font-size: .76rem; font-weight: 800; letter-spacing: 1.5px;
-    text-transform: uppercase; color: var(--yellow);
-  }
-  .callout h3 { margin: 0; font-size: 1.3rem; font-weight: 800; }
-  .callout p { margin: 0; color: var(--ink-soft); }
-  .mail {
-    display: inline-flex; align-items: center; gap: 8px; margin-top: 6px;
-    font-weight: 800; color: var(--cyan); word-break: break-word;
-  }
-
-  /* Footer */
-  footer.site {
-    border-top: 1px solid var(--line);
-    padding: 40px 0 56px; margin-top: 20px;
-    background: rgba(12,7,32,0.6);
-  }
-  .foot-grid { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; }
-  .foot-links { display: flex; flex-wrap: wrap; gap: 22px; }
-  .foot-links a { color: var(--ink-soft); font-weight: 600; font-size: .95rem; }
-  .foot-links a:hover { color: var(--ink); text-decoration: none; }
-  .copyright { color: var(--ink-faint); font-size: .9rem; }
-
-  /* ---------- Responsive ---------- */
-  @media (max-width: 900px) {
-    .hero-grid { grid-template-columns: 1fr; }
-    .picker-stage { order: -1; }
-    .about-grid { grid-template-columns: 1fr; }
-    .feature-grid { grid-template-columns: repeat(2, 1fr); }
-    .steps { grid-template-columns: 1fr; }
-    .callout { grid-template-columns: 1fr; }
-    .nav-links { display: none; }
-  }
-  @media (max-width: 520px) {
-    .feature-grid { grid-template-columns: 1fr; }
-    .meta-row { gap: 14px; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    *, *::before, *::after { animation-duration: .001ms !important; transition: none !important; }
-  }
+  footer{border-top:1px solid var(--line-2); padding:40px 0 56px; text-align:center; color:var(--muted)}
+  footer .fw{font-weight:800; font-size:1.2rem}
+  footer .fw .p{color:var(--purple)}
+  footer a{color:var(--text)}
+  .collab{max-width:520px; margin:8px auto 0; color:var(--muted-2); font-size:.85rem}
+  .small{color:var(--muted-2); font-size:.85rem; margin-top:10px}
+  .nav-links a.nav-cta{color:#fff; background:linear-gradient(90deg,var(--purple),var(--pink)); font-weight:800}
+  .nav-links a.nav-cta:hover{color:#fff; background:linear-gradient(90deg,var(--purple),var(--pink)); box-shadow:0 8px 20px -6px rgba(236,72,153,.5)}
 </style>
 </head>
 <body>
-<a class="skip-link" href="#about">Skip to content</a>
 
-<header class="site">
-  <div class="wrap nav">
-    <div class="brand">
-      <svg class="logo" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+<nav class="topnav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="#top" aria-label="VendyPick home">
+      <svg class="nav-logo" viewBox="0 0 64 64" role="img" aria-label="VendyPick logo">
         <defs>
-          <linearGradient id="vg" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#9b6dff"/>
-            <stop offset="1" stop-color="#38e8ff"/>
+          <linearGradient id="nvg" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#ff4fa3"/><stop offset=".5" stop-color="#9b6dff"/><stop offset="1" stop-color="#38e8ff"/>
           </linearGradient>
-          <linearGradient id="rg" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#ff4fa3"/>
-            <stop offset="0.5" stop-color="#9b6dff"/>
-            <stop offset="1" stop-color="#38e8ff"/>
+          <linearGradient id="nrg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#ff4fa3"/><stop offset=".5" stop-color="#9b6dff"/><stop offset="1" stop-color="#38e8ff"/>
           </linearGradient>
         </defs>
-        <circle cx="32" cy="34" r="22" fill="none" stroke="url(#rg)" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="116 24" transform="rotate(-45 32 34)"/>
-        <path d="M21 24 L32 46 L43 24" fill="none" stroke="url(#vg)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M49 13 l1.8 4.6 4.6 1.8 -4.6 1.8 -1.8 4.6 -1.8 -4.6 -4.6 -1.8 4.6 -1.8 z" fill="#ffd84d"/>
-        <circle cx="15" cy="19" r="3.4" fill="#9b6dff"/>
+        <circle cx="32" cy="34" r="22" fill="none" stroke="url(#nrg)" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M21 23 L32 46 L43 23" fill="none" stroke="url(#nvg)" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+        <path d="M49 12 l1.9 4.9 4.9 1.9 -4.9 1.9 -1.9 4.9 -1.9 -4.9 -4.9 -1.9 4.9 -1.9 z" fill="#ffd84d"/>
+        <circle cx="15" cy="19" r="3.4" fill="#c084fc"/>
       </svg>
-      <span>VendyPick</span>
-    </div>
-    <nav class="nav-links" aria-label="Primary">
-      <a href="#about">About</a>
+      <span>Vendy<span class="np">Pick</span></span>
+    </a>
+    <div class="nav-links">
       <a href="#how">How to play</a>
       <a href="#features">Features</a>
-      <a href="#privacy">Privacy Policy</a>
+      <a href="#languages">Languages</a>
+      <a href="#privacy">Privacy</a>
       <a href="#support">Support</a>
-    </nav>
+      <a class="nav-cta" href="#download">Get it</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="logo-wrap">
+          <svg class="logo" viewBox="0 0 64 64" role="img" aria-label="VendyPick logo">
+            <defs>
+              <linearGradient id="vg" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#ff4fa3"/><stop offset=".5" stop-color="#9b6dff"/><stop offset="1" stop-color="#38e8ff"/>
+              </linearGradient>
+              <linearGradient id="rg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#ff4fa3"/><stop offset=".5" stop-color="#9b6dff"/><stop offset="1" stop-color="#38e8ff"/>
+              </linearGradient>
+            </defs>
+            <circle cx="32" cy="34" r="22" fill="none" stroke="url(#rg)" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M21 23 L32 46 L43 23" fill="none" stroke="url(#vg)" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+            <path d="M49 12 l1.9 4.9 4.9 1.9 -4.9 1.9 -1.9 4.9 -1.9 -4.9 -4.9 -1.9 4.9 -1.9 z" fill="#ffd84d"/>
+            <circle cx="15" cy="19" r="3.4" fill="#c084fc"/>
+          </svg>
+        </div>
+        <span class="eyebrow">Family-safe party game · Android</span>
+        <h1 class="wordmark"><span class="v">Vendy</span><span class="p">Pick</span></h1>
+        <div class="tagline"><span class="c1">Tap.</span> <span class="c2">Pick.</span> <span class="c3">Dare.</span></div>
+        <p class="lede">Everyone puts a finger on the screen. The app picks one player at random. That player gets a quick Truth-or-Dare style prompt. One phone, the whole group, no setup — just play.</p>
+        <div class="badges">
+          <span class="badge"><b>2–10</b> players</span>
+          <span class="badge"><b>8</b> languages</span>
+          <span class="badge">Fully offline</span>
+          <span class="badge">No ads · No tracking</span>
+        </div>
+      </div>
+      <div class="hero-art">
+        <div class="demo">
+          <div class="demo-head">Verify positions</div>
+          <div class="ring-stage">
+            <div class="pspot" data-i="0" data-name="Dell" style="--c:#A855F7"><span class="nm">Dell</span><span class="st">waiting</span></div>
+            <div class="pspot" data-i="1" data-name="Hp" style="--c:#22D3EE"><span class="nm">Hp</span><span class="st">waiting</span></div>
+            <div class="pspot" data-i="2" data-name="MacBook" style="--c:#EC4899"><span class="nm">MacBook</span><span class="st">waiting</span></div>
+          </div>
+          <button type="button" class="pick-btn" id="pickBtn">Pick a random player</button>
+          <div class="pick-result" id="pickResult" aria-live="polite"></div>
+          <p class="demo-hint">A tiny taste of the game — for the real prompts, <a href="#download">download VendyPick</a>.</p>
+        </div>
+      </div>
+    </div>
   </div>
 </header>
 
 <main>
-  <!-- HERO -->
-  <section class="hero" aria-labelledby="hero-title">
-    <div class="wrap hero-grid">
-      <div>
-        <span class="badge"><span class="pulse" aria-hidden="true"></span>2–10 players • No account required • Family-safe</span>
-        <h1 id="hero-title">VendyPick</h1>
-        <p class="motto"><span class="t">Tap.</span> <span class="p">Pick.</span> <span class="d">Dare.</span></p>
-        <p class="tagline">Family-safe finger picker party game</p>
-        <p class="lede">Place your fingers, let VendyPick choose a player, and play quick fun Truth or Dare style prompts.</p>
-        <div class="cta-row">
-          <a class="btn btn-primary" href="#about">See how it works</a>
-          <a class="btn btn-ghost" href="#privacy">Privacy Policy</a>
-        </div>
-      </div>
-
-      <div class="picker-stage" role="img" aria-label="A mock of the VendyPick verify-positions screen: three glowing player rings labelled Dell, Hp and MacBook, with one blinking as it waits for a finger.">
-        <div class="stage-label" aria-hidden="true">Verify positions</div>
-        <div class="spots" id="spots">
-          <div class="spot s1" data-i="1">
-            <span class="ping" aria-hidden="true"></span>
-            <span class="touch" aria-hidden="true">👆</span>
-            <span class="who">Dell</span>
-            <span class="status">Waiting</span>
-          </div>
-          <div class="spot s2" data-i="2">
-            <span class="ping" aria-hidden="true"></span>
-            <span class="touch" aria-hidden="true">👆</span>
-            <span class="who">Hp</span>
-            <span class="status">Waiting</span>
-          </div>
-          <div class="spot s3" data-i="3">
-            <span class="ping" aria-hidden="true"></span>
-            <span class="touch" aria-hidden="true">👆</span>
-            <span class="who">MacBook</span>
-            <span class="status">Waiting</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="about" aria-labelledby="about-title">
+  <section id="how">
     <div class="wrap">
-      <span class="eyebrow">About the game</span>
-      <h2 id="about-title">One tap decides who's up next</h2>
-      <p class="section-lede">VendyPick turns any get-together into a game. Everyone puts a finger on their assigned spot, VendyPick randomly picks one player, and the group gets a light, fun Truth or Dare style prompt to act on. No setup, no scorekeeping by hand — just pass the phone and play.</p>
-      <div class="about-grid">
-        <div class="card">
-          <p class="section-lede" style="margin:0;">Built for the room you're already in. Gather 2 to 10 players, pick your question categories, choose how many rounds (3, 5, 7 or 10) and lives (1 to 3) you want, then enter everyone's name. Each round VendyPick reveals a Truth or Dare style prompt, the group scores it, and players earn stars — score zero and you lose a life, score one or two and the stars stack up. Everything happens locally on your device, with no internet connection needed, so it's perfect for road trips, waiting rooms, and living-room nights.</p>
-        </div>
-        <div class="stat-list">
-          <div class="stat"><span class="n">2–10</span><span class="t">players in one game</span></div>
-          <div class="stat"><span class="n">★</span><span class="t">earn stars, lose lives at zero</span></div>
-          <div class="stat"><span class="n">⚙</span><span class="t">3–10 rounds, 1–3 lives</span></div>
-          <div class="stat"><span class="n">✈</span><span class="t">fully offline, on-device play</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOW TO PLAY -->
-  <section id="how" aria-labelledby="how-title">
-    <div class="wrap">
-      <span class="eyebrow">How a round works</span>
-      <h2 id="how-title">Set up, claim your spot, play</h2>
+      <h2>How it works</h2>
+      <p class="sub">The whole game is one simple loop, repeated for as many rounds as you choose.</p>
       <div class="steps">
-        <article class="step-card">
-          <div class="num" aria-hidden="true"></div>
-          <h3>Set up the game</h3>
-          <p>Choose 2–10 players, your rounds and lives, and which question categories to include. Then type in everyone's name.</p>
-          <div class="cat-chips" aria-hidden="true">
-            <span>Party</span><span>Safe</span><span>Know</span><span>Action</span><span>Deep</span>
-          </div>
-        </article>
-        <article class="step-card">
-          <div class="num" aria-hidden="true"></div>
-          <h3>Verify positions</h3>
-          <p>Each player taps their glowing spot on the screen to claim it, so the phone knows where every finger is before the round begins.</p>
-        </article>
-        <article class="step-card">
-          <div class="num" aria-hidden="true"></div>
-          <h3>Play and score</h3>
-          <p>VendyPick picks the winning position and reveals a Truth or Dare prompt. Score the round 0–2 stars — zero costs a life, one or two add up.</p>
-        </article>
+        <div class="step" style="--acc:#22D3EE; --d:0s"><h3>Place fingers</h3><p>Each player claims a spot and holds a finger on the screen.</p></div>
+        <div class="step" style="--acc:#A855F7; --d:.2s"><h3>The app picks</h3><p>A quick roulette lands on one random player.</p></div>
+        <div class="step" style="--acc:#EC4899; --d:.4s"><h3>Truth or Dare</h3><p>That player gets a prompt from the categories you enabled.</p></div>
+        <div class="step" style="--acc:#F59E0B; --d:.6s"><h3>Score the round</h3><p>The group awards 0, 1 or 2 stars. Zero stars costs a life.</p></div>
+        <div class="step" style="--acc:#34D399; --d:.8s"><h3>Play on</h3><p>Later rounds pick automatically until someone is crowned.</p></div>
       </div>
     </div>
   </section>
 
-  <!-- FEATURES -->
-  <section id="features" aria-labelledby="features-title">
+  <section id="round">
     <div class="wrap">
-      <span class="eyebrow">Features</span>
-      <h2 id="features-title">Everything you need, nothing you don't</h2>
-      <div class="feature-grid">
-        <article class="feature">
-          <div class="ic" aria-hidden="true">👫</div>
-          <h3>Local multiplayer</h3>
-          <p>Pass one phone around the group — no second device or sign-in needed.</p>
-        </article>
-        <article class="feature">
-          <div class="ic" aria-hidden="true">👆</div>
-          <h3>Finger-on-screen picks</h3>
-          <p>Each player claims a spot, then VendyPick randomly selects who plays next.</p>
-        </article>
-        <article class="feature">
-          <div class="ic" aria-hidden="true">🛡️</div>
-          <h3>Family-safe prompts</h3>
-          <p>Pick from categories like Party, Safe, Know, Action and Deep to fit your group.</p>
-        </article>
-        <article class="feature">
-          <div class="ic" aria-hidden="true">🌍</div>
-          <h3>Multiple languages</h3>
-          <p>Play in your preferred language — English, Slovak and more.</p>
-        </article>
-        <article class="feature">
-          <div class="ic" aria-hidden="true">🔓</div>
-          <h3>No account required</h3>
-          <p>Open the app and start — there's no registration or login step.</p>
-        </article>
-        <article class="feature">
-          <div class="ic" aria-hidden="true">📴</div>
-          <h3>No internet to play</h3>
-          <p>Gameplay runs entirely offline, on your device, anywhere you are.</p>
-        </article>
-        <article class="feature">
-          <div class="ic" aria-hidden="true">🚫</div>
-          <h3>No ads</h3>
-          <p>The game is free of advertising banners and interruptions.</p>
-        </article>
-        <article class="feature">
-          <div class="ic" aria-hidden="true">🔒</div>
-          <h3>No tracking</h3>
-          <p>VendyPick doesn't follow you around or build a profile on you.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- PRIVACY -->
-  <section id="privacy" aria-labelledby="privacy-title">
-    <div class="wrap">
-      <span class="eyebrow">Your data stays yours</span>
-      <h2 id="privacy-title">Privacy Policy</h2>
-      <div class="card privacy-card">
-        <div class="meta-row">
-          <div class="meta-item"><b>Effective date</b><span>June 13, 2026</span></div>
-          <div class="meta-item"><b>App name</b><span>VendyPick</span></div>
-          <div class="meta-item"><b>Developer / contact</b><span><a href="mailto:vendeljozko@gmail.com">vendeljozko@gmail.com</a></span></div>
+      <div class="split">
+        <div class="art">
+          <img class="shot" src="screenshots/dare.jpg" width="640" height="1280" loading="lazy" decoding="async"
+               alt="VendyPick round result: a Dare prompt 'Perform an epic goal celebration in slow motion' with a Score Round panel offering 0, 1 or 2 stars.">
         </div>
+        <div class="copy">
+          <h2>Every round, a new challenge</h2>
+          <p class="sub">One player is picked, gets a Truth or Dare prompt from the categories you enabled, and the group decides how it went.</p>
+          <ul class="checklist">
+            <li><span class="tick">✓</span><span><b>Truth or Dare</b> — a fresh prompt every round, never repeated in the same game.</span></li>
+            <li><span class="tick">✓</span><span><b>Score together</b> — the group awards 0, 1 or 2 stars.</span></li>
+            <li><span class="tick">✓</span><span><b>Stars &amp; lives</b> — 0 stars costs a life; the last player standing wins.</span></li>
+            <li><span class="tick">✓</span><span><b>The Joker</b> — from round two, spend a life to make sure you get picked.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        <p>This Privacy Policy explains how VendyPick (the "app") handles information. VendyPick is designed as a simple, offline party game, and it is built to respect your privacy by default.</p>
+  <section id="setup">
+    <div class="wrap">
+      <div class="split">
+        <div class="art">
+          <img class="shot" src="screenshots/menu.jpg" width="645" height="1104" style="aspect-ratio:645/1104" loading="lazy" decoding="async"
+               alt="VendyPick setup screen: choose the number of players from 2 to 10 and the number of rounds.">
+        </div>
+        <div class="copy">
+          <h2>Set up in seconds</h2>
+          <p class="sub">Open the app, pick your settings, and you're playing. No sign-up, no tutorial.</p>
+          <ul class="checklist">
+            <li><span class="tick">✓</span><span><b>Players</b> — anywhere from 2 to 10 on one phone.</span></li>
+            <li><span class="tick">✓</span><span><b>Rounds &amp; lives</b> — choose 3, 5, 7 or 10 rounds and 1–3 lives each.</span></li>
+            <li><span class="tick">✓</span><span><b>Categories</b> — switch the question worlds on and off to match the room.</span></li>
+            <li><span class="tick">✓</span><span><b>Language</b> — play in any of eight languages.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        <h3>No account, no personal data</h3>
-        <ul class="priv-list no">
-          <li>VendyPick does not require account registration.</li>
-          <li>VendyPick does not collect personal information.</li>
-          <li>VendyPick does not use advertising SDKs.</li>
-          <li>VendyPick does not use analytics SDKs.</li>
-          <li>VendyPick does not track users.</li>
-          <li>VendyPick does not sell or share user data.</li>
-        </ul>
+  <section id="features">
+    <div class="wrap">
+      <h2>What's inside</h2>
+      <p class="sub">A big, hand-localized question bank and the little rules that keep a party moving.</p>
+      <div class="grid">
+        <div class="card" style="--acc:#A855F7; --d:0s"><div class="ic">👆</div><h3>Finger-picker fun</h3><p>Fair, hands-on random selection that everyone can see happen — no hidden shuffling.</p></div>
+        <div class="card" style="--acc:#22D3EE; --d:.25s"><div class="ic">🗣️</div><h3>Thousands of prompts</h3><p>More than 2,700 questions across eight languages, each set hand-localized to feel natural — not machine-translated.</p></div>
+        <div class="card" style="--acc:#EC4899; --d:.5s"><div class="ic">🎚️</div><h3>Your rules</h3><p>2–10 players, 3 / 5 / 7 / 10 rounds, 1–3 lives, and category worlds you switch on and off.</p></div>
+        <div class="card" style="--acc:#F59E0B; --d:.75s"><div class="ic">⭐</div><h3>Stars &amp; lives</h3><p>Rounds are scored 0–2 stars. Lose a star too many and you lose a life — last one standing wins.</p></div>
+        <div class="card" style="--acc:#34D399; --d:1s"><div class="ic">🃏</div><h3>The Joker</h3><p>Once per game from round two, spend a life to guarantee you get picked — high risk, high reward.</p></div>
+        <div class="card" style="--acc:#60A5FA; --d:1.25s"><div class="ic">📴</div><h3>Offline &amp; private</h3><p>Plays entirely on your device. No account, no ads, no tracking, no internet needed.</p></div>
+      </div>
+    </div>
+  </section>
 
-        <h3>Gameplay stays on your device</h3>
-        <ul class="priv-list">
-          <li>Gameplay happens locally on your device.</li>
-          <li>Player names entered in the game are used only during local gameplay and are not sent to any server.</li>
-          <li>The app may store temporary local gameplay state or settings on the device, if applicable, but this data stays on the device.</li>
-        </ul>
+  <section id="worlds">
+    <div class="wrap">
+      <h2>Five worlds of questions</h2>
+      <p class="sub">Family-safe by design. Pick the mood — mix and match categories inside each world.</p>
+      <div class="worlds">
+        <div class="world" style="--acc:#EC4899"><div class="name">Party</div><div class="desc">Fun, social, embarrassing, would-you-rather</div></div>
+        <div class="world" style="--acc:#34D399"><div class="name">Safe</div><div class="desc">Children, family, school, kindness, creative</div></div>
+        <div class="world" style="--acc:#22D3EE"><div class="name">Know</div><div class="desc">History, biology, geography, science</div></div>
+        <div class="world" style="--acc:#F59E0B"><div class="name">Action</div><div class="desc">Sport, dance, acting, music, challenges</div></div>
+        <div class="world" style="--acc:#A855F7"><div class="name">Deep</div><div class="desc">Personal, dreams, friendship, values, reflection</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="languages">
+    <div class="wrap">
+      <div class="split">
+        <div class="art">
+          <img class="shot" src="screenshots/lang.jpg" width="635" height="1280" loading="lazy" decoding="async"
+               alt="VendyPick language selection screen, showing English, Slovak, German, Spanish, Polish and Czech options with their Truth/Dare labels.">
+        </div>
+        <div class="copy">
+          <h2>Play in your language</h2>
+          <p class="sub">Eight fully localized languages — each with its own natural-sounding question set, not a shared translation. Even the Truth/Dare labels are localized.</p>
+          <div class="langs">
+            <span class="lang">🇬🇧 English</span>
+            <span class="lang">🇸🇰 Slovak</span>
+            <span class="lang">🇩🇪 German</span>
+            <span class="lang">🇪🇸 Spanish</span>
+            <span class="lang">🇵🇱 Polish</span>
+            <span class="lang">🇨🇿 Czech</span>
+            <span class="lang">🇫🇷 French</span>
+            <span class="lang">🇮🇹 Italian</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="privacy">
+    <div class="wrap">
+      <h2>Privacy Policy</h2>
+      <p class="sub">VendyPick is built to need nothing about you. Here is exactly what that means.</p>
+      <div class="policy">
+        <p class="meta">Effective date: 12 July 2026</p>
+
+        <h3>The short version</h3>
+        <p>VendyPick does not require an account, does not collect personal information, and does not track you. Everything happens on your device.</p>
+
+        <h3>Information we collect</h3>
+        <p><strong>None.</strong> VendyPick does not ask you to register or sign in, and it does not collect names, contacts, location, device identifiers, or any other personal data.</p>
+
+        <h3>Player names and gameplay</h3>
+        <p>Any names you type and any game progress stay on your device for the duration of play. They are not uploaded, shared, or stored on any server.</p>
+
+        <h3>Ads and analytics</h3>
+        <p>The app contains no advertising SDKs and no analytics or tracking SDKs. It does not build a profile of you and does not share data with third parties.</p>
+
+        <h3>Internet access</h3>
+        <p>VendyPick plays fully offline and does not require an internet connection. This website is static and loads no third-party resources.</p>
 
         <h3>Children</h3>
-        <p>The app does not knowingly collect data from children. Because VendyPick collects no personal information at all, no child data is gathered through normal use.</p>
+        <p>VendyPick is designed as a family-safe game. Because the app collects no personal information from anyone, it collects none from children either.</p>
 
-        <h3>Clearing your data</h3>
-        <p>Since data stays on your device, you can remove any locally stored gameplay state or settings at any time by uninstalling the app or by clearing the app's storage in your Android settings.</p>
+        <h3>Permissions</h3>
+        <p>The game runs using only what it needs to display on screen and detect touches. It does not request access to your contacts, camera, microphone, or location.</p>
+
+        <h3>Changes to this policy</h3>
+        <p>If this policy ever changes, the updated version will be posted on this page with a new effective date.</p>
 
         <h3>Contact</h3>
-        <p>If you have any questions about this Privacy Policy or your privacy while using VendyPick, please contact us at <a href="mailto:vendeljozko@gmail.com">vendeljozko@gmail.com</a>.</p>
+        <p>Questions about privacy or the game? Email <a href="mailto:vendeljozko@gmail.com">vendeljozko@gmail.com</a>.</p>
       </div>
     </div>
   </section>
 
-  <!-- CHILDREN / FAMILY -->
-  <section id="family" aria-labelledby="family-title">
+  <section id="download">
     <div class="wrap">
-      <span class="eyebrow">For families</span>
-      <h2 id="family-title">Made for the whole group</h2>
-      <div class="callout">
-        <div class="card">
-          <span class="tag">Family-safe by design</span>
-          <h3>A party game everyone can join</h3>
-          <p>VendyPick is intended as a family-safe party game. Prompts are designed to avoid adult, explicit, or unsafe content, so the game stays comfortable for mixed groups of friends and family.</p>
+      <h2>Get VendyPick</h2>
+      <p class="sub">A free, family-safe party game for Android.</p>
+      <div class="dl-card" style="--acc:#A855F7">
+        <div class="get">
+          <!-- When the app is live on Google Play, replace this <span> with:
+               <a class="gp-btn" href="STORE_URL_HERE"> ... same inner markup ... </a> -->
+          <span class="gp-btn is-soon" role="text" aria-label="Coming soon to Google Play">
+            <span class="gp-ic">
+              <svg width="22" height="24" viewBox="0 0 24 26" aria-hidden="true">
+                <defs><linearGradient id="gpg" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#22D3EE"/><stop offset=".5" stop-color="#A855F7"/><stop offset="1" stop-color="#EC4899"/>
+                </linearGradient></defs>
+                <path d="M2 1 L2 25 L21 13 Z" fill="url(#gpg)"/>
+              </svg>
+            </span>
+            <span class="gp-tx"><small>Coming soon to</small><b>Google Play</b></span>
+          </span>
         </div>
-        <div class="card">
-          <span class="tag">A note for parents</span>
-          <h3>Supervision is always welcome</h3>
-          <p>As with any group party game, we recommend that parents and guardians supervise children's gameplay. This keeps the experience fun and age-appropriate for the players around the table.</p>
-        </div>
+        <p class="get-note">Made by <b>Jozef Vendel</b></p>
       </div>
     </div>
   </section>
 
-  <!-- SUPPORT -->
-  <section id="support" aria-labelledby="support-title">
+  <section id="outro">
     <div class="wrap">
-      <span class="eyebrow">Support</span>
-      <h2 id="support-title">We're here to help</h2>
-      <div class="card">
-        <p class="section-lede" style="margin:0;">For support or privacy questions, contact:</p>
-        <a class="mail" href="mailto:vendeljozko@gmail.com" aria-label="Email VendyPick support">✉ vendeljozko@gmail.com</a>
+      <div class="banner">
+        <img src="feature-graphic.png" width="1024" height="500" loading="lazy" decoding="async"
+             alt="VendyPick — the neon V logo in a glowing ring beside comet-like fingers landing on colored player spots.">
       </div>
     </div>
   </section>
 </main>
 
-<footer class="site">
-  <div class="wrap foot-grid">
-    <div class="copyright">© 2026 VendyPick. All rights reserved.</div>
-    <nav class="foot-links" aria-label="Footer">
-      <a href="#about">About</a>
-      <a href="#how">How to play</a>
-      <a href="#features">Features</a>
-      <a href="#privacy">Privacy Policy</a>
-      <a href="#support">Support</a>
-    </nav>
+<footer id="support">
+  <div class="wrap">
+    <div class="fw"><span>Vendy</span><span class="p">Pick</span></div>
+    <p><span class="c1">Tap.</span> <span class="c2">Pick.</span> <span class="c3">Dare.</span></p>
+    <p>Made by <b>Jozef Vendel</b> · <a href="mailto:vendeljozko@gmail.com">vendeljozko@gmail.com</a></p>
+    <p class="collab">Interested in working together, or in releasing a game or app? Get in touch at <a href="mailto:vendeljozko@gmail.com">vendeljozko@gmail.com</a>.</p>
+    <p class="small">© 2026 VendyPick. All rights reserved.</p>
   </div>
 </footer>
 
 <script>
-  // Ambient "verify positions" demo: highlight one waiting spot on a gentle loop.
-  (function () {
+(function () {
+  var stage = document.querySelector('.ring-stage');
+  var btn = document.getElementById('pickBtn');
+  var res = document.getElementById('pickResult');
+  if (!stage || !btn || !res) return;
+  var spots = Array.prototype.slice.call(stage.querySelectorAll('.pspot'));
+  var running = false;
+
+  function clear() {
+    spots.forEach(function (s) {
+      s.classList.remove('active', 'chosen');
+      var st = s.querySelector('.st');
+      if (st) st.textContent = 'Waiting';
+    });
+  }
+  function done() { running = false; btn.disabled = false; }
+  function finish(idx) {
+    var st = spots[idx].querySelector('.st');
+    if (st) st.textContent = 'Picked!';
+    var name = spots[idx].getAttribute('data-name');
+    res.innerHTML = '🎉 <b>' + name + '</b> is picked — <span class="mode" id="pickMode">…</span>';
+    var mode = document.getElementById('pickMode');
+    var finalDare = Math.random() < 0.5;
+    function setMode(dare) { mode.textContent = dare ? 'DARE' : 'TRUTH'; mode.className = 'mode ' + (dare ? 'd' : 't'); }
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var spots = Array.prototype.slice.call(document.querySelectorAll('.spot'));
-    if (!spots.length) return;
-
-    function cycle() {
-      var i = Math.floor(Math.random() * spots.length);
-      spots.forEach(function (s, idx) {
-        var live = idx === i;
-        s.classList.toggle('live', live);
-        var status = s.querySelector('.status');
-        if (status) status.textContent = live ? 'Tap to verify' : 'Waiting';
-      });
-    }
-
-    cycle();
-    if (!reduce) {
-      setInterval(cycle, 2200);
-    }
-  })();
+    if (reduce) { setMode(finalDare); mode.classList.add('blink'); done(); return; }
+    // wait a moment, then flash TRUTH / DARE before it settles
+    var flips = 7, i = 0;
+    setTimeout(function flash() {
+      setMode(i % 2 === 0);
+      i++;
+      if (i > flips) { setMode(finalDare); mode.classList.add('blink'); done(); return; }
+      setTimeout(flash, 90 + i * 28);
+    }, 350);
+  }
+  function pick() {
+    if (running) return;
+    running = true;
+    btn.disabled = true;
+    res.textContent = '';
+    clear();
+    var winner = Math.floor(Math.random() * spots.length);
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { spots[winner].classList.add('chosen'); finish(winner); return; }
+    var total = spots.length * 3 + winner;   // final index lands exactly on the winner
+    var i = 0;
+    (function step() {
+      clear();
+      var idx = i % spots.length;
+      if (i === total) {
+        spots[idx].classList.add('chosen');
+        finish(idx);
+        return;
+      }
+      spots[idx].classList.add('active');
+      i++;
+      var p = i / total;
+      setTimeout(step, 70 + p * p * 300);    // decelerating roulette
+    })();
+  }
+  btn.addEventListener('click', pick);
+})();
 </script>
+
 </body>
 </html>
