@@ -236,7 +236,13 @@
   .small{color:var(--muted-2); font-size:.85rem; margin-top:10px}
   .nav-links a.nav-cta{color:#fff; background:linear-gradient(90deg,var(--purple),var(--pink)); font-weight:800}
   .nav-links a.nav-cta:hover{color:#fff; background:linear-gradient(90deg,var(--purple),var(--pink)); box-shadow:0 8px 20px -6px rgba(236,72,153,.5)}
-</style>
+  .gp-btn.download-btn{animation:downloadpulse 2.2s ease-in-out infinite}
+  .gp-btn.download-btn:hover{transform:translateY(-3px) scale(1.04)}
+  @keyframes downloadpulse{
+    0%,100%{box-shadow:0 10px 26px -10px rgba(168,85,247,.45)}
+    50%{box-shadow:0 14px 34px -8px rgba(236,72,153,.78), 0 0 0 5px rgba(168,85,247,.10)}
+  }
+  @media(prefers-reduced-motion:reduce){.gp-btn.download-btn{animation:none}}</style>
 </head>
 <body>
 
@@ -265,7 +271,7 @@
       <a href="#languages">Languages</a>
       <a href="#privacy">Privacy</a>
       <a href="#support">Support</a>
-      <a class="nav-cta" href="#download">Get it</a>
+      <a class="nav-cta" href="https://play.google.com/store/apps/details?id=com.vendypick.app" target="_blank" rel="noopener noreferrer">Download</a>
     </div>
   </div>
 </nav>
@@ -468,13 +474,11 @@
 
   <section id="download">
     <div class="wrap">
-      <h2>Get Vendy<span style="color:#A855F7">Pick</span></h2>
+      <h2>Download Vendy<span style="color:#A855F7">Pick</span></h2>
       <p class="sub">A free, family-safe party game for Android.</p>
       <div class="dl-card" style="--acc:#A855F7">
         <div class="get">
-          <!-- When the app is live on Google Play, replace this <span> with:
-               <a class="gp-btn" href="STORE_URL_HERE"> ... same inner markup ... </a> -->
-          <span class="gp-btn is-soon" role="text" aria-label="Coming soon to Google Play">
+          <a class="gp-btn download-btn" href="https://play.google.com/store/apps/details?id=com.vendypick.app" target="_blank" rel="noopener noreferrer" aria-label="Download VendyPick on Google Play">
             <span class="gp-ic">
               <svg width="22" height="24" viewBox="0 0 24 26" aria-hidden="true">
                 <defs><linearGradient id="gpg" x1="0" y1="0" x2="1" y2="1">
@@ -483,8 +487,8 @@
                 <path d="M2 1 L2 25 L21 13 Z" fill="url(#gpg)"/>
               </svg>
             </span>
-            <span class="gp-tx"><small>Coming soon to</small><b>Google Play</b></span>
-          </span>
+            <span class="gp-tx"><small>Download on</small><b>Google Play</b></span>
+          </a>
         </div>
         <p class="get-note">Made by <b>Jozef Vendel</b></p>
       </div>
